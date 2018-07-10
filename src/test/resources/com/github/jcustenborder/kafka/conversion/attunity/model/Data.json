@@ -1,0 +1,26 @@
+{
+  "magic": "atMSG",
+  "type": "DT",
+  "headers": null,
+  "messageSchemaId": "8FB9D3C10EA4B25751DF9CC8318F0A02",
+  "messageSchema": null,
+  "message": {
+    "data": {
+      "emp_no": 14472,
+      "salary": 49592,
+      "from_date": "1993-11-25",
+      "to_date": "1994-11-25"
+    },
+    "beforeData": null,
+    "headers": {
+      "operation": "REFRESH",
+      "changeSequence": "",
+      "timestamp": "",
+      "streamPosition": "",
+      "transactionId": "",
+      "changeMask": null,
+      "columnMask": null,
+      "externalSchemaId": null
+    }
+  }
+}

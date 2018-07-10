@@ -1,0 +1,59 @@
+{
+  "magic": "atMSG",
+  "type": "MD",
+  "headers": null,
+  "messageSchemaId": "94345778F0A920B9F6634C541177EBB2",
+  "messageSchema": "{\"type\":\"record\",\"name\":\"MetadataMessage\",\"fields\":[{\"name\":\"schemaId\",\"type\":{\"type\":\"string\"}},{\"name\":\"lineage\",\"type\":{\"type\":\"record\",\"name\":\"Lineage\",\"fields\":[{\"name\":\"server\",\"type\":{\"type\":\"string\"}},{\"name\":\"task\",\"type\":{\"type\":\"string\"}},{\"name\":\"schema\",\"type\":{\"type\":\"string\"}},{\"name\":\"table\",\"type\":{\"type\":\"string\"}},{\"name\":\"tableVersion\",\"type\":{\"type\":\"long\"}},{\"name\":\"timestamp\",\"type\":{\"type\":\"string\"}}]}},{\"name\":\"tableStructure\",\"type\":{\"type\":\"record\",\"name\":\"TableStructure\",\"fields\":[{\"name\":\"tableColumns\",\"type\":{\"type\":\"record\",\"name\":\"TableColumns\",\"fields\":[{\"name\":\"emp_no\",\"type\":{\"type\":\"record\",\"name\":\"emp_no\",\"fields\":[{\"name\":\"ordinal\",\"type\":{\"type\":\"int\"}},{\"name\":\"type\",\"type\":{\"type\":\"string\"}},{\"name\":\"length\",\"type\":{\"type\":\"int\"}},{\"name\":\"precision\",\"type\":{\"type\":\"int\"}},{\"name\":\"scale\",\"type\":{\"type\":\"int\"}},{\"name\":\"primaryKeyPosition\",\"type\":{\"type\":\"int\"}},{\"name\":\"nullable\",\"type\":{\"type\":\"boolean\"}}]}},{\"name\":\"salary\",\"type\":{\"type\":\"record\",\"name\":\"salary\",\"fields\":[{\"name\":\"ordinal\",\"type\":{\"type\":\"int\"}},{\"name\":\"type\",\"type\":{\"type\":\"string\"}},{\"name\":\"length\",\"type\":{\"type\":\"int\"}},{\"name\":\"precision\",\"type\":{\"type\":\"int\"}},{\"name\":\"scale\",\"type\":{\"type\":\"int\"}},{\"name\":\"primaryKeyPosition\",\"type\":{\"type\":\"int\"}},{\"name\":\"nullable\",\"type\":{\"type\":\"boolean\"}}]}},{\"name\":\"from_date\",\"type\":{\"type\":\"record\",\"name\":\"from_date\",\"fields\":[{\"name\":\"ordinal\",\"type\":{\"type\":\"int\"}},{\"name\":\"type\",\"type\":{\"type\":\"string\"}},{\"name\":\"length\",\"type\":{\"type\":\"int\"}},{\"name\":\"precision\",\"type\":{\"type\":\"int\"}},{\"name\":\"scale\",\"type\":{\"type\":\"int\"}},{\"name\":\"primaryKeyPosition\",\"type\":{\"type\":\"int\"}},{\"name\":\"nullable\",\"type\":{\"type\":\"boolean\"}}]}},{\"name\":\"to_date\",\"type\":{\"type\":\"record\",\"name\":\"to_date\",\"fields\":[{\"name\":\"ordinal\",\"type\":{\"type\":\"int\"}},{\"name\":\"type\",\"type\":{\"type\":\"string\"}},{\"name\":\"length\",\"type\":{\"type\":\"int\"}},{\"name\":\"precision\",\"type\":{\"type\":\"int\"}},{\"name\":\"scale\",\"type\":{\"type\":\"int\"}},{\"name\":\"primaryKeyPosition\",\"type\":{\"type\":\"int\"}},{\"name\":\"nullable\",\"type\":{\"type\":\"boolean\"}}]}}]}}]}},{\"name\":\"dataSchema\",\"type\":{\"type\":\"string\"}}]}",
+  "message": {
+    "schemaId": "94345778F0A920B9F6634C541177EBB2",
+    "lineage": {
+      "server": "attunity-01.custenborder.com",
+      "task": "mysql-to-kafka",
+      "schema": "employees",
+      "table": "salaries",
+      "tableVersion": 1,
+      "timestamp": "2018-04-13T20:13:58.289"
+    },
+    "tableStructure": {
+      "tableColumns": {
+        "emp_no": {
+          "ordinal": 1,
+          "type": "INT4",
+          "length": 10,
+          "precision": 0,
+          "scale": 0,
+          "primaryKeyPosition": 1,
+          "nullable": false
+        },
+        "salary": {
+          "ordinal": 2,
+          "type": "INT4",
+          "length": 10,
+          "precision": 0,
+          "scale": 0,
+          "primaryKeyPosition": 0,
+          "nullable": false
+        },
+        "from_date": {
+          "ordinal": 3,
+          "type": "DATE",
+          "length": 0,
+          "precision": 0,
+          "scale": 0,
+          "primaryKeyPosition": 2,
+          "nullable": false
+        },
+        "to_date": {
+          "ordinal": 4,
+          "type": "DATE",
+          "length": 0,
+          "precision": 0,
+          "scale": 0,
+          "primaryKeyPosition": 0,
+          "nullable": false
+        }
+      }
+    },
+    "dataSchema": "{\"type\":\"record\",\"name\":\"DataRecord\",\"fields\":[{\"name\":\"data\",\"type\":{\"type\":\"record\",\"name\":\"Data\",\"fields\":[{\"name\":\"emp_no\",\"type\":[{\"type\":\"null\"},{\"type\":\"int\"}]},{\"name\":\"salary\",\"type\":[{\"type\":\"null\"},{\"type\":\"int\"}]},{\"name\":\"from_date\",\"type\":[{\"type\":\"null\"},{\"type\":\"string\"}]},{\"name\":\"to_date\",\"type\":[{\"type\":\"null\"},{\"type\":\"string\"}]}]}},{\"name\":\"beforeData\",\"type\":[{\"type\":\"null\"},\"Data\"]},{\"name\":\"headers\",\"type\":{\"type\":\"record\",\"name\":\"Headers\",\"fields\":[{\"name\":\"operation\",\"type\":{\"type\":\"enum\",\"name\":\"operation\",\"symbols\":[\"INSERT\",\"UPDATE\",\"DELETE\",\"REFRESH\"]}},{\"name\":\"changeSequence\",\"type\":{\"type\":\"string\"}},{\"name\":\"timestamp\",\"type\":{\"type\":\"string\"}},{\"name\":\"streamPosition\",\"type\":{\"type\":\"string\"}},{\"name\":\"transactionId\",\"type\":{\"type\":\"string\"}},{\"name\":\"changeMask\",\"type\":[{\"type\":\"null\"},{\"type\":\"bytes\"}]},{\"name\":\"columnMask\",\"type\":[{\"type\":\"null\"},{\"type\":\"bytes\"}]}]}}]}"
+  }
+}
