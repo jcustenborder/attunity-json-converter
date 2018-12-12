@@ -18,23 +18,18 @@ package com.github.jcustenborder.kafka.conversion.attunity;
 import com.github.jcustenborder.DockerProperties;
 import com.github.jcustenborder.kafka.conversion.attunity.model.Data;
 import com.github.jcustenborder.kafka.conversion.attunity.model.Metadata;
-import com.github.jcustenborder.kafka.conversion.attunity.streams.ConversionRequestPredicate;
+import com.github.jcustenborder.kafka.conversion.attunity.streams.SchemaTopicNameExtractor;
 import com.github.jcustenborder.kafka.conversion.attunity.streams.StructSerde;
 import com.github.jcustenborder.kafka.serialization.jackson.JacksonSerde;
 import com.google.common.base.Preconditions;
 import io.confluent.connect.avro.AvroConverter;
-import org.apache.kafka.clients.admin.AdminClient;
-import org.apache.kafka.clients.admin.DescribeTopicsResult;
-import org.apache.kafka.clients.admin.KafkaAdminClient;
-import org.apache.kafka.clients.admin.TopicDescription;
-import org.apache.kafka.common.KafkaFuture;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.common.utils.Bytes;
-import org.apache.kafka.streams.Consumed;
 import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.StreamsConfig;
 import org.apache.kafka.streams.Topology;
+import org.apache.kafka.streams.kstream.Consumed;
 import org.apache.kafka.streams.kstream.GlobalKTable;
 import org.apache.kafka.streams.kstream.KStream;
 import org.apache.kafka.streams.kstream.Materialized;
@@ -43,12 +38,7 @@ import org.apache.kafka.streams.state.KeyValueStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Arrays;
-import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 public class AttunityJsonConversion {
   static final String METADATA_STORE = "metadata-store";
@@ -93,63 +83,22 @@ public class AttunityJsonConversion {
             .withValueSerde(metadataSerde)
     );
 
+    final StructKeyValueMapper converter = new StructKeyValueMapper(config);
+    final SchemaTopicNameExtractor topicNameExtractor = new SchemaTopicNameExtractor();
 
+    //At this point we don't care about the key. All the data we need is in the value.
     final KStream<byte[], Data> dataStream = streamsBuilder.stream(config.dataTopic,
         Consumed.with(Serdes.ByteArray(), dataSerde)
     );
 
-    ConversionRequestPredicate[] tablePredicates = config.tables
-        .stream()
-        .map(t -> new ConversionRequestPredicate(t,
-                String.format("%s.%s", config.outputTopicPrefix, t)
-            )
-        ).toArray(ConversionRequestPredicate[]::new);
-    final List<String> outputTopics = Arrays.stream(tablePredicates)
-        .map(ConversionRequestPredicate::topic)
-        .collect(Collectors.toList());
-
-    AdminClient adminClient = KafkaAdminClient.create(new LinkedHashMap<>(settings));
-    DescribeTopicsResult result = adminClient.describeTopics(outputTopics);
-
-
-    int missingTopics = 0;
-    Map<String, KafkaFuture<TopicDescription>> describeTopics = result.values();
-    for (Map.Entry<String, KafkaFuture<TopicDescription>> kvp : describeTopics.entrySet()) {
-      try {
-        final TopicDescription topicDescription = kvp.getValue().get(60, TimeUnit.SECONDS);
-      } catch (Exception ex) {
-        missingTopics++;
-        log.error("Topic {} does not exist. Please create topic {}",
-            kvp.getKey(),
-            kvp.getKey(),
-            ex
-        );
-      }
-    }
-
-    Preconditions.checkState(
-        missingTopics == 0,
-        "Found %s missing topics. Please create topics.",
-        missingTopics
-    );
-
-    KStream<byte[], ConversionRequest>[] conversionStreams = dataStream.join(metadataTable,
+    dataStream.join(metadataTable,
         (bytes, data) -> data.messageSchemaId(),
         ConversionRequest::of
-    ).branch(tablePredicates);
-
-
-    StructKeyValueMapper converter = new StructKeyValueMapper(config);
-
-    for (int i = 0; i < tablePredicates.length; i++) {
-      ConversionRequestPredicate predicate = tablePredicates[i];
-      KStream<byte[], ConversionRequest> conversionStream = conversionStreams[i];
-      conversionStream
-          .map(converter)
-          .to(predicate.topic(), Produced.with(keySerde, valueSerde));
-    }
+    ).map(converter)
+        .to(topicNameExtractor, Produced.with(keySerde, valueSerde));
 
     Topology topology = streamsBuilder.build();
+
 
     KafkaStreams streams = new KafkaStreams(topology, streamsConfig);
     streams.start();

@@ -20,7 +20,6 @@ import com.google.common.base.Preconditions;
 import org.apache.kafka.common.config.AbstractConfig;
 import org.apache.kafka.common.config.ConfigDef;
 
-import java.util.List;
 import java.util.Map;
 
 public class Config extends AbstractConfig {
@@ -35,8 +34,6 @@ public class Config extends AbstractConfig {
   public static final String METADATA_TOPIC_DOC = "Topic that contains the metadata for the topic.";
   public static final String OUTPUT_TOPIC_PREFIX_CONFIG = "attunity.output.topic.prefix";
   public static final String OUTPUT_TOPIC_PREFIX_DOC = "Topic that contains the metadata for the topic.";
-  public static final String TABLES_CONFIG = "attunity.tables";
-  public static final String TABLES_DOC = "Tables to convert.";
   public final String recordNamespace;
   public final boolean includeSchema;
   public final CaseFormat tableInputFormat = CaseFormat.LOWER_UNDERSCORE;
@@ -44,16 +41,14 @@ public class Config extends AbstractConfig {
   public final String dataTopic;
   public final String metadataTopic;
   public final String outputTopicPrefix;
-  public final List<String> tables;
 
   public Config(Map<?, ?> originals) {
     super(config(), originals);
     this.recordNamespace = getString(RECORD_NAMESPACE_CONFIG);
     this.includeSchema = getBoolean(INCLUDE_SCHEMA_CONFIG);
     this.dataTopic = getString(DATA_TOPIC_CONFIG);
-    this.metadataTopic = getString(DATA_TOPIC_CONFIG);
+    this.metadataTopic = getString(METADATA_TOPIC_CONFIG);
     this.outputTopicPrefix = getString(OUTPUT_TOPIC_PREFIX_CONFIG);
-    this.tables = getList(TABLES_CONFIG);
   }
 
   public static ConfigDef config() {
@@ -62,8 +57,7 @@ public class Config extends AbstractConfig {
         .define(INCLUDE_SCHEMA_CONFIG, ConfigDef.Type.BOOLEAN, false, ConfigDef.Importance.HIGH, INCLUDE_SCHEMA_DOC)
         .define(DATA_TOPIC_CONFIG, ConfigDef.Type.STRING, ConfigDef.Importance.HIGH, DATA_TOPIC_DOC)
         .define(METADATA_TOPIC_CONFIG, ConfigDef.Type.STRING, ConfigDef.Importance.HIGH, METADATA_TOPIC_DOC)
-        .define(OUTPUT_TOPIC_PREFIX_CONFIG, ConfigDef.Type.STRING, ConfigDef.Importance.HIGH, OUTPUT_TOPIC_PREFIX_DOC)
-        .define(TABLES_CONFIG, ConfigDef.Type.LIST, ConfigDef.Importance.HIGH, TABLES_DOC);
+        .define(OUTPUT_TOPIC_PREFIX_CONFIG, ConfigDef.Type.STRING, ConfigDef.Importance.HIGH, OUTPUT_TOPIC_PREFIX_DOC);
   }
 
   public <T extends Enum<T>> T getEnum(Class<T> enumClass, String key) {

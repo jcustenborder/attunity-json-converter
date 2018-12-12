@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -38,8 +38,7 @@ public class TableStructureConverterTest {
         Config.RECORD_NAMESPACE_CONFIG, "com.foo",
         Config.METADATA_TOPIC_CONFIG, "metadata",
         Config.DATA_TOPIC_CONFIG, "data",
-        Config.OUTPUT_TOPIC_PREFIX_CONFIG, "converted",
-        Config.TABLES_CONFIG, "foo"
+        Config.OUTPUT_TOPIC_PREFIX_CONFIG, "converted"
     ));
     TableStructureConverter tableConverter = new TableStructureConverter(config);
     ConverterFactory converterFactory = new ConverterFactory(config);

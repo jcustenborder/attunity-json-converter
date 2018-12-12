@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,11 +15,14 @@
  */
 package com.github.jcustenborder.kafka.conversion.attunity.model;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import java.util.Map;
 
+@JsonAutoDetect(fieldVisibility = Visibility.NONE, getterVisibility = Visibility.NONE, setterVisibility = Visibility.NONE)
 public class Data {
   @JsonProperty
   String magic;
@@ -27,14 +30,13 @@ public class Data {
   String type;
   @JsonProperty
   Object headers;
-
   @JsonProperty
   String messageSchemaId;
   @JsonProperty
   String messageSchema;
-
   @JsonProperty
   Message message;
+
 
   public String magic() {
     return this.magic;
@@ -67,6 +69,7 @@ public class Data {
     DELETE
   }
 
+  @JsonAutoDetect(fieldVisibility = Visibility.NONE, getterVisibility = Visibility.NONE, setterVisibility = Visibility.NONE)
   public static class Headers {
     @JsonProperty
     Operation operation;
@@ -118,6 +121,7 @@ public class Data {
     }
   }
 
+  @JsonAutoDetect(fieldVisibility = Visibility.NONE, getterVisibility = Visibility.NONE, setterVisibility = Visibility.NONE)
   public static class Message {
     @JsonProperty
     Map<String, JsonNode> data;
@@ -125,6 +129,8 @@ public class Data {
     Map<String, JsonNode> beforeData;
     @JsonProperty
     Headers headers;
+    @JsonProperty
+    Boolean delete;
 
     public Map<String, JsonNode> data() {
       return this.data;

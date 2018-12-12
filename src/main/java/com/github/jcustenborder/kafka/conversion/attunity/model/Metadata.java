@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,13 +15,16 @@
  */
 package com.github.jcustenborder.kafka.conversion.attunity.model;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.github.jcustenborder.kafka.conversion.attunity.Constants;
 import com.google.common.collect.ImmutableMap;
 
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.NONE, getterVisibility = JsonAutoDetect.Visibility.NONE, setterVisibility = JsonAutoDetect.Visibility.NONE)
 public class Metadata {
   @JsonProperty
   String magic;
@@ -61,12 +64,13 @@ public class Metadata {
     return this.message;
   }
 
+
   public Map<String, String> parameters() {
     Map<String, String> result = new LinkedHashMap<>();
     result.put("attunity.message.schemaId", this.messageSchemaId());
     result.put("attunity.message.lineage.server", this.message().lineage().server());
-    result.put("attunity.message.lineage.schema", this.message().lineage().schema());
-    result.put("attunity.message.lineage.table", this.message().lineage().table());
+    result.put(Constants.PARM_SCHEMA, this.message().lineage().schema());
+    result.put(Constants.PARM_TABLE, this.message().lineage().table());
     result.put("attunity.message.lineage.task", this.message().lineage().task());
     result.put("attunity.message.lineage.tableVersion", Integer.toString(this.message().lineage().tableVersion()));
     return ImmutableMap.copyOf(result);
@@ -88,6 +92,7 @@ public class Metadata {
     DATETIME
   }
 
+  @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.NONE, getterVisibility = JsonAutoDetect.Visibility.NONE, setterVisibility = JsonAutoDetect.Visibility.NONE)
   public static class Message {
     @JsonProperty
     String schemaId;
@@ -115,6 +120,7 @@ public class Metadata {
     }
   }
 
+  @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.NONE, getterVisibility = JsonAutoDetect.Visibility.NONE, setterVisibility = JsonAutoDetect.Visibility.NONE)
   public static class Lineage {
     @JsonProperty
     String server;
@@ -154,6 +160,7 @@ public class Metadata {
     }
   }
 
+  @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.NONE, getterVisibility = JsonAutoDetect.Visibility.NONE, setterVisibility = JsonAutoDetect.Visibility.NONE)
   public static class TableStructure {
     @JsonProperty
     Map<String, Column> tableColumns;
@@ -163,6 +170,7 @@ public class Metadata {
     }
   }
 
+  @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.NONE, getterVisibility = JsonAutoDetect.Visibility.NONE, setterVisibility = JsonAutoDetect.Visibility.NONE)
   public static class Column {
     @JsonProperty
     int ordinal;
