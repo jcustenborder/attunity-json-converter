@@ -10,6 +10,7 @@ import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -37,6 +38,7 @@ public class DataIT {
 
 
   @Test
+  @Disabled
   public void foo() {
     Map<String, Object> settings = ImmutableMap.of(
         ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "kafka:9092",
